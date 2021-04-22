@@ -45,7 +45,7 @@ var userSchema = new mongoose.Schema(
         partialFilterExpression: { email: { $type: 'string' } }
       }
     },
-    userinfo: {
+    contactinfo: {
       type: String,
       trim: true,
       default: null

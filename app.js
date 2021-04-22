@@ -14,6 +14,7 @@ const app = express();
 const authRoutes = require('./routes/auth');
 const cityRoutes = require('./routes/city');
 const userRoutes = require('./routes/user');
+const productRoutes = require('./routes/product');
 
 // DB Connection
 mongoose
@@ -36,6 +37,7 @@ app.use('./images', express.static(path.join(__dirname, 'images')));
 
 // Routes
 app.use('/api', authRoutes);
+app.use('/api', productRoutes);
 app.use('/api', cityRoutes);
 app.use('/api', userRoutes);
 app.use(express.static('public'));
