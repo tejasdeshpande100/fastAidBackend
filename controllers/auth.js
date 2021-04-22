@@ -16,25 +16,36 @@ exports.login = (req, res, next) => {
 
     if (!user) {
       let phoneNumber = req.body.phoneNumber;
-      const newUser = new User({ phoneNumber, password });
+      const user = new User({ phoneNumber, password });
 
-      newUser.save((err, user) => {
+      user.save((err, user) => {
         if (err) {
           return res.status(400).json({
             err: 'NOT able to save user in DB'
           });
-          user = newUser;
         }
       });
-    }
-    // create token
-    const token = jwt.sign({ _id: user._id }, process.env.SECRET);
-    //put token in cookie
-    res.cookie('token', token, { expire: new Date() + 9999 });
 
-    // send response to front end
-    const { _id, phoneNumber } = user;
-    return res.json({ token, user: { _id, phoneNumber } });
+      // create token
+      const token = jwt.sign({ _id: user._id }, process.env.SECRET);
+      //put token in cookie
+      res.cookie('token', token, { expire: new Date() + 9999 });
+
+      // send response to front end
+      const { _id, name } = user;
+      return res.json({ token, user: { _id, phoneNumber, name } });
+    }
+
+    if (user) {
+      // create token
+      const token = jwt.sign({ _id: user._id }, process.env.SECRET);
+      //put token in cookie
+      res.cookie('token', token, { expire: new Date() + 9999 });
+
+      // send response to front end
+      const { _id, name, phoneNumber } = user;
+      return res.json({ token, user: { _id, name, phoneNumber } });
+    }
   });
 };
 

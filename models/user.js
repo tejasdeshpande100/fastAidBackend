@@ -32,8 +32,7 @@ var userSchema = new mongoose.Schema(
     },
     city: {
       type: ObjectId,
-      ref: 'City',
-      required: true
+      ref: 'City'
     },
 
     email: {

@@ -11,10 +11,13 @@ exports.createProduct = (req, res, next) => {
   const { name, description, price, stock, city, user, searchIndex } = req.body;
   let photos = [];
   let i = 0;
-  while (i < req.files.length) {
-    photos.push(req.files[i].path);
-    i++;
+  if (req.files.length) {
+    while (i < req.files.length) {
+      photos.push(req.files[i].path);
+      i++;
+    }
   }
+
   console.log(photos);
   const product = new Product({
     name,
