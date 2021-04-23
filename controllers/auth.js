@@ -37,6 +37,12 @@ exports.login = (req, res, next) => {
     }
 
     if (user) {
+      if (!user.autheticate(password)) {
+        return res.status(401).json({
+          error: 'Incorrect password'
+        });
+      }
+
       // create token
       const token = jwt.sign({ _id: user._id }, process.env.SECRET);
       //put token in cookie
@@ -66,3 +72,11 @@ exports.isSignedIn = expressJwt({
   userProperty: 'auth',
   algorithms: ['HS256']
 });
+
+exports.signout = (req, res) => {
+  res.clearCookie('token');
+  console.log('signed out');
+  res.json({
+    message: 'User signout successfully'
+  });
+};
