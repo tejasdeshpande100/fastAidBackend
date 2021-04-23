@@ -186,7 +186,7 @@ exports.getProducts = async (req, res, next) => {
               photos: doc.photos,
               stock: doc.stock,
               _id: doc._id,
-              user: doc.user._id,
+              user: doc.user,
               request: {
                 type: 'GET',
                 url: 'http://159.65.159.82:8000/api/product/' + doc._id
