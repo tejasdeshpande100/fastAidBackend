@@ -17,6 +17,6 @@ router.post('/product/create/:userId', isSignedIn, isAuthenticated, upload.array
 router.delete('/product/:productId/:userId', isSignedIn, isAuthenticated, deleteProduct);
 router.get('/products/:cityId', getProducts);
 router.get('/product/:productId', getProduct);
-router.get('/product/user/:userId', getUserProducts);
+router.get('/products/user/:userId', getUserProducts);
 
 module.exports = router;
