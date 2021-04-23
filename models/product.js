@@ -12,6 +12,10 @@ const productSchema = new mongoose.Schema(
       type: ObjectId,
       ref: 'User'
     },
+    companyName: {
+      type: String,
+      trim: true
+    },
     searchIndex: {
       type: String
     },
