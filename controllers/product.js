@@ -152,6 +152,66 @@ const clearImages = filePathArray => {
   }
 };
 
+exports.getUserProducts = async (req, res, next) => {
+  if (req.params.userId) {
+    const user = req.params.userId;
+
+    // PAGINATION (10 PRODUCTS PER PAGE)
+    const currentPage = req.query.page || 1;
+    const perPage = 30;
+    let totalItems;
+
+    await Product.countDocuments({ user }, function (err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        totalItems = result;
+      }
+    });
+
+    Product.find({ user })
+      .skip((currentPage - 1) * perPage)
+      .sort({ _id: -1 })
+      .limit(perPage)
+      .populate('city')
+      .populate('user')
+      .select('name city address companyName contactNumber price photos stock')
+      .exec()
+      .then(docs => {
+        const response = {
+          totalCount: totalItems,
+          products: docs.map(doc => {
+            return {
+              name: doc.name,
+              price: doc.price,
+              photos: doc.photos,
+              address: doc.address,
+              companyName: doc.companyName,
+              contactNumber: doc.contactNumber,
+              city: doc.city,
+              stock: doc.stock,
+              _id: doc._id,
+              user: doc.user,
+              request: {
+                type: 'GET',
+                url: 'http://159.65.159.82:8000/api/product/' + doc._id
+              }
+            };
+          })
+        };
+        res.status(200).json(response);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+  } else {
+    res.send('No UserId param in request');
+  }
+};
+
 exports.getProducts = async (req, res, next) => {
   if (req.params.cityId) {
     const city = req.params.cityId;

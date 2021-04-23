@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const { isSignedIn, isAuthenticated } = require('../controllers/auth');
-const { createProduct, deleteProduct, getProductById, updateProduct, getProduct, getProducts } = require('../controllers/product');
+const { createProduct, deleteProduct, getProductById, updateProduct, getProduct, getProducts, getUserProducts } = require('../controllers/product');
 const { getUserById } = require('../controllers/user');
 const { upload } = require('../controllers/multer');
 
@@ -17,5 +17,6 @@ router.post('/product/create/:userId', isSignedIn, isAuthenticated, upload.array
 router.delete('/product/:productId/:userId', isSignedIn, isAuthenticated, deleteProduct);
 router.get('/products/:cityId', getProducts);
 router.get('/product/:productId', getProduct);
+router.get('/product/user/:userId', getUserProducts);
 
 module.exports = router;
