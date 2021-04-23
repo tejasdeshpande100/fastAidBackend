@@ -8,7 +8,7 @@ const Product = require('../models/product');
 
 exports.createProduct = (req, res, next) => {
   console.log(req.body);
-  const { name, description, price, stock, city, user, searchIndex } = req.body;
+  const { name, description, companyName, address, contactNumber, price, stock, city, user, searchIndex } = req.body;
   let photos = [];
   let i = 0;
   if (req.files.length) {
@@ -21,6 +21,9 @@ exports.createProduct = (req, res, next) => {
   console.log(photos);
   const product = new Product({
     name,
+    companyName,
+    address,
+    contactNumber,
     description,
     price,
     stock,
