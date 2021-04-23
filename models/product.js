@@ -8,6 +8,14 @@ const productSchema = new mongoose.Schema(
       trim: true,
       required: true
     },
+    address: {
+      type: String,
+      trim: true
+    },
+    contactNumber: {
+      type: Number,
+      trim: true
+    },
     user: {
       type: ObjectId,
       ref: 'User'
