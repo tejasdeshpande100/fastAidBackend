@@ -173,8 +173,8 @@ exports.getProducts = async (req, res, next) => {
       .skip((currentPage - 1) * perPage)
       .sort({ _id: -1 })
       .limit(perPage)
-      .populate('user', 'open')
-      .select('name price photos stock')
+      .populate('user', 'city')
+      .select('name city address companyName contactNumber price photos stock')
       .exec()
       .then(docs => {
         const response = {
@@ -184,6 +184,9 @@ exports.getProducts = async (req, res, next) => {
               name: doc.name,
               price: doc.price,
               photos: doc.photos,
+              address: doc.address,
+              companyName: doc.companyName,
+              contactNumber: doc.contactNumber,
               stock: doc.stock,
               _id: doc._id,
               user: doc.user,
