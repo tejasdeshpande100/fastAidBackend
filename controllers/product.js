@@ -1,3 +1,4 @@
+const csv = require('csvtojson');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -5,6 +6,68 @@ const mongoose = require('mongoose');
 
 const { validationResult } = require('express-validator');
 const Product = require('../models/product');
+
+// exports.insertFromCsv = async (req, res, next) => {
+//   const csvFilePath = `${req.file.destination}/${req.file.filename}`;
+
+//   await csv({
+//     noheader: false,
+//     headers: ['inShopId', 'name', 'markedPrice', 'price', 'description', 'stock', 'category', 'photos', 'searchIndex']
+//   })
+//     .fromFile(csvFilePath)
+//     .then(jsonArray => {
+//       for (element of jsonArray) {
+//         const photos = [];
+
+//         element.photos.split(',').forEach(path => {
+//           photos.push(path.trim());
+//         });
+//         element.shopName = req.body.shopName;
+//         element.city = '5eff8e76d75ecb3735b243b1';
+//         element.shopId = req.body.shopId;
+//         element._id = mongoose.Types.ObjectId();
+//         console.log(element._id);
+//         element.photos = photos;
+//       }
+
+//       for (element of jsonArray) {
+//         if (element.inShopId.split('$').length > 1) {
+//           const products = jsonArray.filter(doc => doc.inShopId.split('$')[0] === element.inShopId.split('$')[0]);
+
+//           const variants = [];
+//           for (product of products) {
+//             const variant = {};
+
+//             variant.product = product._id;
+//             variant.size = product.inShopId.split('$')[1];
+//             variant.color = product.inShopId.split('$')[2];
+
+//             variants.push(variant);
+//           }
+//           products.forEach(product => {
+//             product.inShopId = product.inShopId.split('$')[0];
+//             product.variants = variants;
+//           });
+//         }
+//       }
+
+//       Product.insertMany(jsonArray, (err, docs) => {
+//         if (err) console.log(err);
+//         console.log(docs);
+//       });
+
+//       res.send(
+//         JSON.stringify({
+//           message: 'Uploaded products successfully',
+//           products: jsonArray
+//         })
+//       );
+//     });
+//   fs.unlink(path.join(__dirname, '..', req.file.destination, req.file.filename), err => {
+//     if (err) console.log(err);
+//     else console.log('success');
+//   });
+// };
 
 exports.createProduct = (req, res, next) => {
   console.log(req.body);
