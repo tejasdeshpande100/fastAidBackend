@@ -303,7 +303,8 @@ exports.getProducts = async (req, res, next) => {
       .limit(perPage)
       .populate('city')
       .populate('user')
-      .select('name city address companyName contactNumber price photos stock')
+      .populate('category')
+      .select('name city address companyName category contactNumber price photos stock')
       .exec()
       .then(docs => {
         const response = {
@@ -315,6 +316,7 @@ exports.getProducts = async (req, res, next) => {
               photos: doc.photos,
               address: doc.address,
               companyName: doc.companyName,
+              category: doc.category,
               contactNumber: doc.contactNumber,
               city: doc.city,
               stock: doc.stock,
