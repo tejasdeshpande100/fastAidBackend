@@ -16,7 +16,8 @@ exports.login = (req, res, next) => {
 
     if (!user) {
       let phoneNumber = req.body.phoneNumber;
-      const user = new User({ phoneNumber, password });
+      let seller = req.body.seller;
+      const user = new User({ phoneNumber, password, seller });
 
       user.save((err, user) => {
         if (err) {

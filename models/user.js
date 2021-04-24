@@ -25,6 +25,11 @@ var userSchema = new mongoose.Schema(
       },
       default: null
     },
+    seller: {
+      type: Number,
+      trim: true,
+      default: 0
+    },
     lastname: {
       type: String,
       maxlength: 32,
