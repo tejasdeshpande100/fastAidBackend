@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const { isSignedIn, isAuthenticated } = require('../controllers/auth');
-const { createProduct, deleteProduct, getProductById, updateProduct, getProduct, getProducts, getUserProducts } = require('../controllers/product');
+const { createProduct, deleteProduct, getProductById, updateProduct, getProduct, getProducts, getUserProducts, listBySearch } = require('../controllers/product');
 const { getUserById } = require('../controllers/user');
 const { upload } = require('../controllers/multer');
 
@@ -18,5 +18,6 @@ router.delete('/product/:productId/:userId', isSignedIn, isAuthenticated, delete
 router.get('/products/:cityId', getProducts);
 router.get('/product/:productId', getProduct);
 router.get('/products/user/:userId', getUserProducts);
+router.get('/search/products/:cityId', listBySearch);
 
 module.exports = router;

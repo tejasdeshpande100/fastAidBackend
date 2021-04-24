@@ -274,3 +274,64 @@ exports.getProducts = async (req, res, next) => {
     res.send('No City Selected');
   }
 };
+
+exports.listBySearch = async (req, res) => {
+  const currentPage = req.query.page || 1;
+  const perPage = 30;
+  let totalCount;
+
+  if (req.query.search) {
+    console.log(req.query.search);
+    // let str = '';
+
+    // req.query.search.split(' ').forEach(word => {
+    //   str += word + '|';
+    // });
+
+    const query = {
+      $or: [{ name: { $regex: req.query.search, $options: 'i' } }, { searchIndex: { $regex: req.query.search, $options: 'i' } }],
+      city: req.params.cityId
+    };
+
+    await Product.countDocuments(query, function (err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        totalCount = result;
+      }
+    });
+
+    Product.find(query)
+      .populate('city')
+      .populate('user')
+      .select('name city address companyName contactNumber price photos stock')
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage)
+      .then(docs => {
+        return res.status(200).send({
+          totalCount,
+
+          products: docs.map(doc => {
+            return {
+              name: doc.name,
+              price: doc.price,
+              photos: doc.photos,
+              address: doc.address,
+              companyName: doc.companyName,
+              contactNumber: doc.contactNumber,
+              city: doc.city,
+              stock: doc.stock,
+              _id: doc._id,
+              user: doc.user,
+              request: {
+                type: 'GET',
+                url: 'http://159.65.159.82:8000/api/product/' + doc._id
+              }
+            };
+          })
+        });
+      });
+  } else {
+    return res.status(400).send('Search query cannot be empty');
+  }
+};
