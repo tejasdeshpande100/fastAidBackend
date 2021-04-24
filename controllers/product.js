@@ -119,8 +119,7 @@ exports.createProduct = (req, res, next) => {
 };
 
 exports.deleteProduct = (req, res) => {
-  let product = req.product;
-  product.remove((err, deletedProduct) => {
+  Product.findByIdAndRemove({ _id: req.params.productId }, (err, deletedProduct) => {
     if (err) {
       return res.status(400).json({
         error: 'Failed to delete the product'
@@ -241,7 +240,8 @@ exports.getUserProducts = async (req, res, next) => {
       .limit(perPage)
       .populate('city')
       .populate('user')
-      .select('name city address companyName contactNumber price photos stock')
+      .populate('category')
+      .select('name city address companyName contactNumber price photos stock category')
       .exec()
       .then(docs => {
         const response = {
@@ -253,6 +253,7 @@ exports.getUserProducts = async (req, res, next) => {
               photos: doc.photos,
               address: doc.address,
               companyName: doc.companyName,
+              category: doc.category,
               contactNumber: doc.contactNumber,
               city: doc.city,
               stock: doc.stock,
