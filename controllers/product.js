@@ -266,7 +266,7 @@ exports.getUserProducts = async (req, res, next) => {
       .populate('city')
       .populate('user')
       .populate('category')
-      .select('name city address companyName contactNumber price photos stock category')
+      .select('name city address companyName contactNumber price photos stock category likes dislikes')
       .exec()
       .then(docs => {
         const response = {
@@ -280,6 +280,8 @@ exports.getUserProducts = async (req, res, next) => {
               companyName: doc.companyName,
               category: doc.category,
               contactNumber: doc.contactNumber,
+              likes: doc.likes,
+              dislikes: doc.dislikes,
               city: doc.city,
               stock: doc.stock,
               _id: doc._id,
@@ -328,7 +330,7 @@ exports.getProducts = async (req, res, next) => {
       .populate('city')
       .populate('user')
       .populate('category')
-      .select('name city address companyName category contactNumber price photos stock')
+      .select('name city address companyName category contactNumber price photos stock likes dislikes')
       .exec()
       .then(docs => {
         const response = {
@@ -339,6 +341,8 @@ exports.getProducts = async (req, res, next) => {
               price: doc.price,
               photos: doc.photos,
               address: doc.address,
+              likes: doc.likes,
+              dislikes: doc.dislikes,
               companyName: doc.companyName,
               category: doc.category,
               contactNumber: doc.contactNumber,
@@ -395,7 +399,7 @@ exports.listBySearch = async (req, res) => {
     Product.find(query)
       .populate('city')
       .populate('user')
-      .select('name city address companyName contactNumber price photos stock')
+      .select('name city address companyName contactNumber price photos stock likes dislikes')
       .skip((currentPage - 1) * perPage)
       .limit(perPage)
       .then(docs => {
@@ -410,6 +414,8 @@ exports.listBySearch = async (req, res) => {
               address: doc.address,
               companyName: doc.companyName,
               contactNumber: doc.contactNumber,
+              likes: doc.likes,
+              dislikes: doc.dislikes,
               city: doc.city,
               stock: doc.stock,
               _id: doc._id,
