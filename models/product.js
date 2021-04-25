@@ -38,6 +38,9 @@ const productSchema = new mongoose.Schema(
       maxlength: 32,
       trim: true
     },
+    email: {
+      type: String
+    },
     category: {
       type: ObjectId,
       ref: 'Category',
@@ -49,6 +52,12 @@ const productSchema = new mongoose.Schema(
       required: true
     },
     stock: {
+      type: Number
+    },
+    likes: {
+      type: Number
+    },
+    dislikes: {
       type: Number
     },
     photos: [

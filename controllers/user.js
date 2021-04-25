@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Product = require('../models/product');
 
 exports.getUserById = (req, res, next, id) => {
   User.findById(id).exec((err, user) => {
@@ -10,6 +11,18 @@ exports.getUserById = (req, res, next, id) => {
     req.profile = user;
     next();
   });
+};
+
+exports.likeProduct = async (req, res) => {
+  Product.updateOne({ _id: req.params.productId }, { $inc: { likes: 1 } }, { new: true, useFindAndModify: false })
+    .then(result => res.send(result))
+    .catch(err => console.log(err));
+};
+
+exports.dislikeProduct = async (req, res) => {
+  Product.updateOne({ _id: req.params.productId }, { $inc: { dislikes: 1 } }, { new: true, useFindAndModify: false })
+    .then(result => res.send(result))
+    .catch(err => console.log(err));
 };
 
 exports.updateUserDetails = (req, res) => {

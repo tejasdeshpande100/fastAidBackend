@@ -39,7 +39,6 @@ var userSchema = new mongoose.Schema(
       type: ObjectId,
       ref: 'City'
     },
-
     email: {
       type: String,
       trim: true,

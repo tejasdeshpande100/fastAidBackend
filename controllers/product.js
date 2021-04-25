@@ -2,71 +2,95 @@ const csv = require('csvtojson');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
-// const { ObjectId } = mongoose.Schema;
 
 const { validationResult } = require('express-validator');
 const Product = require('../models/product');
+const City = require('../models/city');
 
-// exports.insertFromCsv = async (req, res, next) => {
-//   const csvFilePath = `${req.file.destination}/${req.file.filename}`;
+// exports.addNames = async (req, res, next) => {
+//   await Product.updateMany({ category: '608449f68fcb7523531b7fe1' }, { $set: { name: 'Hospital beds' } }, (err, docs) => {
+//     if (err) console.log('Error in updating products');
+//     else res.send('Update Successful');
 
+//     return;
+//   });
+// };
+
+// exports.bulkUpload = async (req, res, next) => {
+//   // DO NOT FORGET to add appropriate path
+//   const csvFilePath = `/Users/tejasdeshpande/Desktop/fastAidBackend/Csvs/plasmaDB.csv`;
+//   let citiesArray = [];
+//   let cityIds = [];
+//   await City.find({}, (err, docs) => {
+//     if (err) console.log('Error in finding cities');
+//     docs.forEach((doc, index) => {
+//       citiesArray.push(doc.name.toLowerCase());
+//       cityIds.push(doc._id);
+//     });
+
+//     return;
+//   });
 //   await csv({
 //     noheader: false,
-//     headers: ['inShopId', 'name', 'markedPrice', 'price', 'description', 'stock', 'category', 'photos', 'searchIndex']
+//     // DO NOT FORGET to add appropriate headers
+//     headers: ['companyName', 'city', 'email', 'contactNumber', 'address']
 //   })
 //     .fromFile(csvFilePath)
 //     .then(jsonArray => {
+//       let uploadable = [];
 //       for (element of jsonArray) {
-//         const photos = [];
-
-//         element.photos.split(',').forEach(path => {
-//           photos.push(path.trim());
-//         });
-//         element.shopName = req.body.shopName;
-//         element.city = '5eff8e76d75ecb3735b243b1';
-//         element.shopId = req.body.shopId;
-//         element._id = mongoose.Types.ObjectId();
-//         console.log(element._id);
-//         element.photos = photos;
-//       }
-
-//       for (element of jsonArray) {
-//         if (element.inShopId.split('$').length > 1) {
-//           const products = jsonArray.filter(doc => doc.inShopId.split('$')[0] === element.inShopId.split('$')[0]);
-
-//           const variants = [];
-//           for (product of products) {
-//             const variant = {};
-
-//             variant.product = product._id;
-//             variant.size = product.inShopId.split('$')[1];
-//             variant.color = product.inShopId.split('$')[2];
-
-//             variants.push(variant);
-//           }
-//           products.forEach(product => {
-//             product.inShopId = product.inShopId.split('$')[0];
-//             product.variants = variants;
-//           });
+//         if (citiesArray.includes(element.city.toLowerCase())) {
+//           // DO NOT FORGET to add appropriate category
+//           element.category = '60844a258fcb7523531b7fe5';
+//           element.city = cityIds[citiesArray.findIndex(name => name === element.city.toLowerCase())];
+//           uploadable.push(element);
 //         }
 //       }
 
-//       Product.insertMany(jsonArray, (err, docs) => {
+//       // return res.send(uploadable);
+
+//       Product.insertMany(uploadable, (err, docs) => {
 //         if (err) console.log(err);
 //         console.log(docs);
 //       });
 
-//       res.send(
+//       return res.send(
 //         JSON.stringify({
 //           message: 'Uploaded products successfully',
-//           products: jsonArray
+//           products: uploadable
 //         })
 //       );
 //     });
-//   fs.unlink(path.join(__dirname, '..', req.file.destination, req.file.filename), err => {
-//     if (err) console.log(err);
-//     else console.log('success');
+// };
+
+// exports.checkForNewCities = async (req, res, next) => {
+//   const csvFilePath = `/Users/tejasdeshpande/Desktop/fastAidBackend/Csvs/plasmaDB.csv`;
+//   let citiesArray = [];
+//   await City.find({}, (err, docs) => {
+//     if (err) console.log('Error in finding cities');
+//     docs.forEach((doc, index) => {
+//       citiesArray.push(doc.name.toLowerCase());
+//     });
+
+//     return;
 //   });
+//   await csv({
+//     noheader: false,
+//     headers: ['companyName', 'city', 'email', 'contactNumber', 'address']
+//   })
+//     .fromFile(csvFilePath)
+//     .then(jsonArray => {
+//       let newCitiesArray = [];
+//       for (element of jsonArray) {
+//         if (!citiesArray.includes(element.city.toLowerCase())) newCitiesArray.push(element.city.toLowerCase());
+//       }
+//       let resArray = [];
+//       Array.from(new Set(newCitiesArray)).forEach((element, index) => {
+//         resArray.push(element[0].toUpperCase() + element.slice(1));
+//       });
+
+//       return res.send(resArray);
+//     });
 // };
 
 exports.createProduct = (req, res, next) => {

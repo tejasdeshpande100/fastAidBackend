@@ -3,6 +3,7 @@
 /.pnp
 .pnp.js
 /public
+/Csvs
 
 # testing
 /coverage
