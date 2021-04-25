@@ -55,10 +55,12 @@ const productSchema = new mongoose.Schema(
       type: Number
     },
     likes: {
-      type: Number
+      type: Number,
+      default: 0
     },
     dislikes: {
-      type: Number
+      type: Number,
+      default: 0
     },
     photos: [
       {
