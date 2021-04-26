@@ -8,7 +8,7 @@ const Product = require('../models/product');
 const City = require('../models/city');
 
 // exports.addNames = async (req, res, next) => {
-//   await Product.updateMany({ category: '608449f68fcb7523531b7fe1' }, { $set: { name: 'Hospital beds' } }, (err, docs) => {
+//   await Product.updateMany({ category: '608449df8fcb7523531b7fdf' }, { $set: { name: 'Remdesivir' } }, (err, docs) => {
 //     if (err) console.log('Error in updating products');
 //     else res.send('Update Successful');
 
@@ -16,82 +16,92 @@ const City = require('../models/city');
 //   });
 // };
 
-// exports.bulkUpload = async (req, res, next) => {
-//   // DO NOT FORGET to add appropriate path
-//   const csvFilePath = `/Users/tejasdeshpande/Desktop/fastAidBackend/Csvs/plasmaDB.csv`;
-//   let citiesArray = [];
-//   let cityIds = [];
-//   await City.find({}, (err, docs) => {
-//     if (err) console.log('Error in finding cities');
-//     docs.forEach((doc, index) => {
-//       citiesArray.push(doc.name.toLowerCase());
-//       cityIds.push(doc._id);
-//     });
+exports.deleteProducts = async (req, res, next) => {
+  await Product.deleteMany({ category: '608449ea8fcb7523531b7fe0' }, (err, docs) => {
+    if (err) console.log('Error in deleting products');
+    else res.send('Deletion Successful');
 
-//     return;
-//   });
-//   await csv({
-//     noheader: false,
-//     // DO NOT FORGET to add appropriate headers
-//     headers: ['companyName', 'city', 'email', 'contactNumber', 'address']
-//   })
-//     .fromFile(csvFilePath)
-//     .then(jsonArray => {
-//       let uploadable = [];
-//       for (element of jsonArray) {
-//         if (citiesArray.includes(element.city.toLowerCase())) {
-//           // DO NOT FORGET to add appropriate category
-//           element.category = '60844a258fcb7523531b7fe5';
-//           element.city = cityIds[citiesArray.findIndex(name => name === element.city.toLowerCase())];
-//           uploadable.push(element);
-//         }
-//       }
+    return;
+  });
+};
 
-//       // return res.send(uploadable);
+exports.bulkUpload = async (req, res, next) => {
+  // DO NOT FORGET to add appropriate path
+  const csvFilePath = `/Users/tejasdeshpande/Desktop/fastAidBackend/Csvs/Tolima.csv`;
+  let citiesArray = [];
+  let cityIds = [];
+  await City.find({}, (err, docs) => {
+    if (err) console.log('Error in finding cities');
+    docs.forEach((doc, index) => {
+      citiesArray.push(doc.name.toLowerCase());
+      cityIds.push(doc._id);
+    });
 
-//       Product.insertMany(uploadable, (err, docs) => {
-//         if (err) console.log(err);
-//         console.log(docs);
-//       });
+    return;
+  });
+  await csv({
+    noheader: false,
+    // DO NOT FORGET to add appropriate headers
+    headers: ['companyName', 'city', 'contactNumber', 'address']
+  })
+    .fromFile(csvFilePath)
+    .then(jsonArray => {
+      let uploadable = [];
+      for (element of jsonArray) {
+        if (citiesArray.includes(element.city.toLowerCase())) {
+          //           // DO NOT FORGET to add appropriate category
+          element.category = '608449ea8fcb7523531b7fe0';
+          element.name = 'Tocilizumab';
+          element.city = cityIds[citiesArray.findIndex(name => name === element.city.toLowerCase())];
+          uploadable.push(element);
+        }
+      }
 
-//       return res.send(
-//         JSON.stringify({
-//           message: 'Uploaded products successfully',
-//           products: uploadable
-//         })
-//       );
-//     });
-// };
+      // return res.send(uploadable);
 
-// exports.checkForNewCities = async (req, res, next) => {
-//   const csvFilePath = `/Users/tejasdeshpande/Desktop/fastAidBackend/Csvs/plasmaDB.csv`;
-//   let citiesArray = [];
-//   await City.find({}, (err, docs) => {
-//     if (err) console.log('Error in finding cities');
-//     docs.forEach((doc, index) => {
-//       citiesArray.push(doc.name.toLowerCase());
-//     });
+      Product.insertMany(uploadable, (err, docs) => {
+        if (err) console.log(err);
+        console.log(docs);
+      });
 
-//     return;
-//   });
-//   await csv({
-//     noheader: false,
-//     headers: ['companyName', 'city', 'email', 'contactNumber', 'address']
-//   })
-//     .fromFile(csvFilePath)
-//     .then(jsonArray => {
-//       let newCitiesArray = [];
-//       for (element of jsonArray) {
-//         if (!citiesArray.includes(element.city.toLowerCase())) newCitiesArray.push(element.city.toLowerCase());
-//       }
-//       let resArray = [];
-//       Array.from(new Set(newCitiesArray)).forEach((element, index) => {
-//         resArray.push(element[0].toUpperCase() + element.slice(1));
-//       });
+      return res.send(
+        JSON.stringify({
+          message: 'Uploaded products successfully',
+          products: uploadable
+        })
+      );
+    });
+};
 
-//       return res.send(resArray);
-//     });
-// };
+exports.checkForNewCities = async (req, res, next) => {
+  const csvFilePath = `/Users/tejasdeshpande/Desktop/fastAidBackend/Csvs/Tolima.csv`;
+  let citiesArray = [];
+  await City.find({}, (err, docs) => {
+    if (err) console.log('Error in finding cities');
+    docs.forEach((doc, index) => {
+      citiesArray.push(doc.name.toLowerCase());
+    });
+
+    return;
+  });
+  await csv({
+    noheader: false,
+    headers: ['companyName', 'city', 'contactNumber', 'address']
+  })
+    .fromFile(csvFilePath)
+    .then(jsonArray => {
+      let newCitiesArray = [];
+      for (element of jsonArray) {
+        if (!citiesArray.includes(element.city.toLowerCase())) newCitiesArray.push(element.city.toLowerCase());
+      }
+      let resArray = [];
+      Array.from(new Set(newCitiesArray)).forEach((element, index) => {
+        resArray.push(element[0].toUpperCase() + element.slice(1));
+      });
+
+      return res.send(resArray);
+    });
+};
 
 exports.createProduct = (req, res, next) => {
   console.log(req.body);
@@ -266,7 +276,7 @@ exports.getUserProducts = async (req, res, next) => {
       .populate('city')
       .populate('user')
       .populate('category')
-      .select('name city address companyName contactNumber price photos stock category likes dislikes')
+      .select('name city address companyName contactNumber price photos stock category likes dislikes createdAt updatedAt')
       .exec()
       .then(docs => {
         const response = {
@@ -278,6 +288,8 @@ exports.getUserProducts = async (req, res, next) => {
               photos: doc.photos,
               address: doc.address,
               companyName: doc.companyName,
+              createdAt: doc.createdAt,
+              updatedAt: doc.updatedAt,
               category: doc.category,
               contactNumber: doc.contactNumber,
               likes: doc.likes,
@@ -307,6 +319,8 @@ exports.getUserProducts = async (req, res, next) => {
 };
 
 exports.getProducts = async (req, res, next) => {
+  const filter = req.query.filter || '_id';
+
   if (req.params.cityId) {
     const city = req.params.cityId;
 
@@ -325,12 +339,12 @@ exports.getProducts = async (req, res, next) => {
 
     Product.find({ city })
       .skip((currentPage - 1) * perPage)
-      .sort({ _id: -1 })
+      .sort({ [filter]: -1 })
       .limit(perPage)
       .populate('city')
       .populate('user')
       .populate('category')
-      .select('name city address companyName category contactNumber price photos stock likes dislikes')
+      .select('name city address companyName category contactNumber price photos stock likes dislikes createdAt updatedAt')
       .exec()
       .then(docs => {
         const response = {
@@ -343,6 +357,8 @@ exports.getProducts = async (req, res, next) => {
               address: doc.address,
               likes: doc.likes,
               dislikes: doc.dislikes,
+              createdAt: doc.createdAt,
+              updatedAt: doc.updatedAt,
               companyName: doc.companyName,
               category: doc.category,
               contactNumber: doc.contactNumber,
@@ -371,6 +387,7 @@ exports.getProducts = async (req, res, next) => {
 };
 
 exports.listBySearch = async (req, res) => {
+  const filter = req.query.filter || '_id';
   const currentPage = req.query.page || 1;
   const perPage = 30;
   let totalCount;
@@ -397,6 +414,7 @@ exports.listBySearch = async (req, res) => {
     });
 
     Product.find(query)
+      .sort({ [filter]: -1 })
       .populate('city')
       .populate('user')
       .select('name city address companyName contactNumber price photos stock likes dislikes')
