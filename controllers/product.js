@@ -417,7 +417,7 @@ exports.listBySearch = async (req, res) => {
       .sort({ [filter]: -1 })
       .populate('city')
       .populate('user')
-      .select('name city address companyName contactNumber price photos stock likes dislikes')
+      .select('name city address companyName contactNumber price photos stock likes dislikes createdAt updatedAt')
       .skip((currentPage - 1) * perPage)
       .limit(perPage)
       .then(docs => {
@@ -432,6 +432,8 @@ exports.listBySearch = async (req, res) => {
               address: doc.address,
               companyName: doc.companyName,
               contactNumber: doc.contactNumber,
+              createdAt: doc.createdAt,
+              updatedAt: doc.updatedAt,
               likes: doc.likes,
               dislikes: doc.dislikes,
               city: doc.city,
