@@ -52,7 +52,7 @@ const productSchema = new mongoose.Schema(
       required: true
     },
     stock: {
-      type: Number
+      type: String
     },
     likes: {
       type: Number,

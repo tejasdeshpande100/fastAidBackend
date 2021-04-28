@@ -8,7 +8,7 @@ const Product = require('../models/product');
 const City = require('../models/city');
 
 // exports.addNames = async (req, res, next) => {
-//   await Product.updateMany({ category: '608449df8fcb7523531b7fdf' }, { $set: { name: 'Remdesivir' } }, (err, docs) => {
+//   await Product.updateMany({ category: '608449ea8fcb7523531b7fe0' }, { $set: { name: 'Tocilizumab' } }, (err, docs) => {
 //     if (err) console.log('Error in updating products');
 //     else res.send('Update Successful');
 
